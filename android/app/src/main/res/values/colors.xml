@@ -1,0 +1,4 @@
+<resources>
+    <!-- خلفية الأيقونة = لون التطبيق (theme-color). خلفية ic_fg.png نفسها متلوّنة بنفس اللون (#0e0e0f) عشان مايبانش مربع -->
+    <color name="ic_bg">#0e0e0f</color>
+</resources>

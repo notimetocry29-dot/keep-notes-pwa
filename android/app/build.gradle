@@ -1,0 +1,60 @@
+plugins { id 'com.android.application' }
+
+def readVer = { String f, String name ->
+    def src = file("../../${f}")
+    if (!src.exists()) return null
+    def m = (src.getText('UTF-8') =~ /const\s+${name}\s*=\s*['"](\d+)['"]/)
+    m.find() ? m.group(1) : null
+}
+def appVer = readVer('app.js', 'VER'), swVer = readVer('sw.js', 'BUILD')
+def webVer = appVer ?: swVer
+if (!webVer) throw new GradleException("Couldn't read the web version: no const VER='NNN' in app.js and no const BUILD='NNN' in sw.js")
+if (appVer && swVer && appVer != swVer) logger.warn("WARNING: app.js VER=${appVer} but sw.js BUILD=${swVer}; using ${webVer}")
+
+def ksFile = System.getenv('KEYSTORE_FILE'), ksPass = System.getenv('KEYSTORE_PASSWORD'), ksAlias = System.getenv('KEY_ALIAS')
+def missingKeys = []
+if (!ksFile) { missingKeys << 'KEYSTORE_FILE' } else if (!file(ksFile).exists()) { missingKeys << "KEYSTORE_FILE (${ksFile} not found)" }
+if (!ksPass) missingKeys << 'KEYSTORE_PASSWORD'
+if (!ksAlias) missingKeys << 'KEY_ALIAS'
+gradle.taskGraph.whenReady { graph ->
+    if (missingKeys && graph.allTasks.any { it.project == project && it.name.toLowerCase().contains('release') })
+        throw new GradleException("Release signing secrets missing: ${missingKeys.join(', ')}. Refusing to build an unsigned/debug-signed release.")
+}
+
+android {
+    namespace 'app.keeplite.twa'
+    compileSdk 35
+    defaultConfig {
+        applicationId 'app.keeplite.twa'
+        minSdk 24
+        targetSdk 35
+        versionCode = Integer.parseInt((project.findProperty('vCode') ?: '1').toString())
+        versionName = "1.0.${webVer}"
+    }
+    signingConfigs {
+        release {
+            if (!missingKeys) {
+                storeFile file(ksFile)
+                storePassword ksPass
+                keyAlias ksAlias
+                keyPassword ksPass
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}
+
+dependencies {
+    implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.22')
+    implementation 'androidx.activity:activity:1.9.3'
+    implementation 'androidx.core:core:1.13.1'
+    implementation 'androidx.core:core-splashscreen:1.0.1'
+    implementation 'androidx.webkit:webkit:1.12.1'
+}

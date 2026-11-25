@@ -1,33 +1,21 @@
 {
-  "name": "نوتس كيب - KeepLite",
-  "short_name": "KeepLite",
-  "description": "تطبيق خفيف لتدوين الملاحظات شبيه بجوجل كيب مع نسخ احتياطي تلقائي لملف نصي (.txt)",
-  "start_url": "./index.html",
+  "name": "مفكرة — KeepLite",
+  "short_name": "مفكرة",
+  "id": "./",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait-primary",
+  "orientation": "portrait",
   "dir": "rtl",
   "lang": "ar",
-  "background_color": "#ffffff",
-  "theme_color": "#fbbc04",
+  "description": "مفكرة خفيفة وسريعة للموبايل بتصميم هادئ، ألوان، بحث فوري، ونسخ احتياطي تلقائي لملف .txt",
+  "background_color": "#0e0e0f",
+  "theme_color": "#0e0e0f",
   "icons": [
-    {
-      "src": "./icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "./icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "./icons/icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    }
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
   ]
 }

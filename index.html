@@ -1,34 +1,99 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#fbbc04" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0e0e0f" />
+  <meta name="robots" content="noindex,nofollow" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="description" content="تطبيق ملاحظات خفيف شبيه بجوجل كيب للموبايل مع نسخ احتياطي تلقائي لملف txt" />
-  <title>KeepLite - ملاحظاتي</title>
-  <link rel="manifest" href="./manifest.json" />
-  <link rel="icon" type="image/svg+xml" href="./icons/icon.svg" />
-  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
-  <link rel="stylesheet" href="./styles.css" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' blob:; worker-src 'self'; manifest-src 'self'; media-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <title>مفكرة — KeepLite</title>
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="app.css" />
 </head>
 <body>
-  <div class="app-shell">
-    <!-- Top Search Header -->
-    <header class="top-bar">
-      <div class="search-pill">
-        <button id="btnOpenBackup" class="icon-btn backup-trigger" type="button" title="النسخ الاحتياطي (.txt)" aria-label="النسخ الاحتياطي">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" y1="13" x2="8" y2="13"/>
-            <line x1="16" y1="17" x2="8" y2="17"/>
-          </svg>
-          <span id="autoBackupDot" class="status-dot active" title="النسخ الاحتياطي التلقائي مفعل"></span>
-        </button>
+  <!-- Splash Screen (first open or after 2h absence) -->
+  <div id="splash" aria-hidden="true">
+    <div class="sp-in">
+      <svg class="sp-r" viewBox="0 0 512 512">
+        <defs>
+          <linearGradient id="spcu" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="var(--ac2)" />
+            <stop offset="1" stop-color="var(--ac)" />
+          </linearGradient>
+        </defs>
+        <path class="sp-a sp-dn" style="--i:0" pathLength="1" d="M268.3 80.4A176 176 0 0 1 431.6 243.7" />
+        <path class="sp-a sp-dn" style="--i:1" pathLength="1" d="M431.6 268.3A176 176 0 0 1 268.3 431.6" />
+        <path class="sp-a sp-cu" style="--i:2" pathLength="1" d="M243.7 431.6A176 176 0 0 1 80.4 268.3" />
+        <path class="sp-a sp-pd" style="--i:3" pathLength="1" d="M80.4 243.7A176 176 0 0 1 243.7 80.4" />
+        <g class="sp-n">
+          <rect x="176" y="160" width="160" height="192" rx="24" fill="var(--s1)" stroke="var(--ac)" stroke-width="8" />
+          <rect x="206" y="202" width="100" height="14" rx="7" fill="var(--ac2)" />
+          <rect x="206" y="236" width="84" height="12" rx="6" fill="var(--tx)" opacity="0.85" />
+          <rect x="206" y="268" width="60" height="12" rx="6" fill="var(--mu)" />
+          <circle cx="300" cy="316" r="8" fill="var(--pw)" />
+        </g>
+      </svg>
+      <div class="sp-w">مفكرة</div>
+      <div class="sp-sig">KEEPLITE NOTES</div>
+    </div>
+  </div>
+  <script src="splash.js"></script>
 
+  <div class="app-shell">
+    <!-- Top Brand & Controls Bar -->
+    <header class="top">
+      <div class="brand">
+        <svg class="lg" id="brandLogo" viewBox="0 0 40 40" aria-hidden="true">
+          <circle cx="20" cy="20" r="16" fill="none" stroke="var(--bd)" stroke-width="2.5" />
+          <path d="M20 4 A16 16 0 0 1 35 15" fill="none" stroke="var(--pw)" stroke-width="3" stroke-linecap="round" />
+          <rect x="13" y="11" width="14" height="18" rx="3" fill="var(--s1)" stroke="var(--ac)" stroke-width="2" />
+          <line x1="16" y1="16" x2="24" y2="16" stroke="var(--ac2)" stroke-width="2" stroke-linecap="round" />
+          <line x1="16" y1="21" x2="22" y2="21" stroke="var(--tx2)" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <span class="wmk">مفكرة</span>
+      </div>
+
+      <button class="btn sm pri" id="updBtn" type="button" hidden>تحديث جاهز</button>
+
+      <button id="btnToggleView" class="icb" type="button" title="تغيير العرض" aria-label="تغيير طريقة العرض">
+        <svg id="iconViewGrid" hidden viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" rx="1.5" />
+          <rect x="14" y="3" width="7" height="7" rx="1.5" />
+          <rect x="3" y="14" width="7" height="7" rx="1.5" />
+          <rect x="14" y="14" width="7" height="7" rx="1.5" />
+        </svg>
+        <svg id="iconViewList" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
+          <line x1="4" y1="7" x2="20" y2="7" />
+          <line x1="4" y1="12" x2="20" y2="12" />
+          <line x1="4" y1="17" x2="20" y2="17" />
+        </svg>
+      </button>
+
+      <button id="btnOpenBackup" class="icb backup-trigger" type="button" title="النسخ الاحتياطي والإعدادات" aria-label="النسخ الاحتياطي والإعدادات">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+          <line x1="16" y1="13" x2="8" y2="13" />
+          <line x1="16" y1="17" x2="8" y2="17" />
+        </svg>
+        <span id="autoBackupDot" class="status-dot active" title="النسخ الاحتياطي التلقائي مفعل"></span>
+      </button>
+    </header>
+
+    <!-- Search + Filter Bar -->
+    <div class="search-dock">
+      <div class="search-pill">
+        <svg class="sico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="11" cy="11" r="7" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
         <input
           id="searchInput"
           type="search"
@@ -36,88 +101,55 @@
           autocomplete="off"
           aria-label="ابحث في ملاحظاتك"
         />
-
-        <button id="btnClearSearch" class="icon-btn hidden" type="button" title="مسح البحث" aria-label="مسح البحث">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18"/>
-            <line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
-        </button>
-
-        <button id="btnToggleView" class="icon-btn" type="button" title="تغيير العرض" aria-label="تغيير طريقة العرض">
-          <svg id="iconViewGrid" class="hidden" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="3" width="7" height="7" rx="1.5"/>
-            <rect x="14" y="3" width="7" height="7" rx="1.5"/>
-            <rect x="3" y="14" width="7" height="7" rx="1.5"/>
-            <rect x="14" y="14" width="7" height="7" rx="1.5"/>
-          </svg>
-          <svg id="iconViewList" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="4" y1="6" x2="20" y2="6"/>
-            <line x1="4" y1="12" x2="20" y2="12"/>
-            <line x1="4" y1="18" x2="20" y2="18"/>
-          </svg>
-        </button>
-
-        <button id="btnToggleTheme" class="icon-btn" type="button" title="الوضع الليلي" aria-label="تبديل الوضع الليلي">
-          <svg id="iconMoon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </svg>
-          <svg id="iconSun" class="hidden" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="5"/>
-            <line x1="12" y1="1" x2="12" y2="3"/>
-            <line x1="12" y1="21" x2="12" y2="23"/>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-            <line x1="1" y1="12" x2="3" y2="12"/>
-            <line x1="21" y1="12" x2="23" y2="12"/>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        <button id="btnClearSearch" class="icb clear-btn" type="button" title="مسح البحث" aria-label="مسح البحث" hidden>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
         </button>
       </div>
 
-      <!-- Quick Color Filter Strip -->
       <div id="colorFilterBar" class="color-filter-bar" aria-label="تصفية حسب اللون"></div>
-    </header>
+    </div>
 
-    <!-- Install PWA Prompt Banner (shown only when installable) -->
-    <div id="installBanner" class="install-banner hidden">
-      <span>ثبّت التطبيق على شاشة موبايلك للوصول السريع بدون إنترنت</span>
+    <!-- Install PWA Prompt Banner -->
+    <div id="installBanner" class="install-banner" hidden>
+      <span>ثبّت التطبيق على موبايلك للعمل أوفلاين</span>
       <div class="install-actions">
-        <button id="btnInstallPwa" class="btn-primary-sm" type="button">تثبيت</button>
-        <button id="btnDismissInstall" class="btn-ghost-sm" type="button">لاحقاً</button>
+        <button id="btnInstallPwa" class="btn sm pri" type="button">تثبيت</button>
+        <button id="btnDismissInstall" class="btn sm ghost" type="button">لاحقاً</button>
       </div>
     </div>
 
     <!-- Main Notes Area -->
-    <main class="notes-container">
-      <section id="pinnedSection" class="notes-section hidden">
+    <main id="view" class="notes-container">
+      <section id="pinnedSection" class="notes-section" hidden>
         <h2 class="section-label">مثبتة</h2>
         <div id="pinnedGrid" class="notes-grid"></div>
       </section>
 
-      <section id="othersSection" class="notes-section hidden">
-        <h2 id="othersLabel" class="section-label hidden">أخرى</h2>
+      <section id="othersSection" class="notes-section" hidden>
+        <h2 id="othersLabel" class="section-label" hidden>أخرى</h2>
         <div id="othersGrid" class="notes-grid"></div>
       </section>
 
       <div id="emptyState" class="empty-state">
-        <div class="empty-icon">
-          <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M9 18h6"/>
-            <path d="M10 22h4"/>
-            <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/>
+        <div class="empty-orb" aria-hidden="true">
+          <svg viewBox="0 0 120 120" width="76" height="76">
+            <circle cx="60" cy="60" r="46" fill="var(--s1)" stroke="var(--bd)" stroke-width="2" />
+            <path d="M60 14 A46 46 0 0 1 104 48" fill="none" stroke="var(--ac)" stroke-width="3.5" stroke-linecap="round" />
+            <path d="M51 74h18M54 82h12M68 62c.6-2.2 1.8-3.8 3.6-5.5A14 14 0 1 0 48.4 56.5c1.8 1.7 3 3.3 3.6 5.5" fill="none" stroke="var(--ac2)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </div>
         <p id="emptyTitle" class="empty-title">ملاحظاتك تظهر هنا</p>
-        <p id="emptySub" class="empty-sub">اضغط على + لتدوين أول ملاحظة — ويتم نسخها احتياطياً لملف .txt</p>
+        <p id="emptySub" class="empty-sub">اضغط + لتدوين أول ملاحظة — مع حفظ فوري ونسخ احتياطي .txt</p>
       </div>
     </main>
 
     <!-- Bottom Quick Bar + FAB -->
     <footer class="bottom-bar">
       <button id="btnQuickNote" class="quick-take-btn" type="button">
-        دوّن ملاحظة...
+        دوّن ملاحظة سريعة...
       </button>
       <button id="btnBackupChip" class="backup-mini-chip" type="button" title="حالة النسخ الاحتياطي">
         <span class="chip-dot"></span>
@@ -126,45 +158,44 @@
     </footer>
 
     <button id="fabAddNote" class="fab" type="button" aria-label="ملاحظة جديدة" title="ملاحظة جديدة">
-      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-        <line x1="12" y1="5" x2="12" y2="19"/>
-        <line x1="5" y1="12" x2="19" y2="12"/>
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round">
+        <line x1="12" y1="5" x2="12" y2="19" />
+        <line x1="5" y1="12" x2="19" y2="12" />
       </svg>
     </button>
   </div>
 
-  <!-- Note Editor Modal -->
-  <div id="editorModal" class="modal hidden" role="dialog" aria-modal="true" aria-label="تحرير الملاحظة">
+  <!-- Note Editor Sheet / Fullscreen -->
+  <div id="editorModal" class="modal" hidden role="dialog" aria-modal="true" aria-label="تحرير الملاحظة">
     <div class="modal-backdrop" id="editorBackdrop"></div>
     <div id="editorSheet" class="editor-sheet" data-color="default">
       <div class="editor-header">
-        <button id="btnSaveClose" class="btn-done" type="button" aria-label="حفظ وإغلاق">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2">
-            <polyline points="9 18 15 12 9 6"/>
+        <button id="btnSaveClose" class="btn sm pri btn-done" type="button" aria-label="حفظ وإغلاق">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6" />
           </svg>
           <span>حفظ</span>
         </button>
 
         <div class="editor-top-actions">
-          <button id="btnTogglePin" class="icon-btn" type="button" title="تثبيت الملاحظة" aria-label="تثبيت">
-            <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 17v5"/>
-              <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/>
+          <button id="btnTogglePin" class="icb" type="button" title="تثبيت الملاحظة" aria-label="تثبيت">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 17v5" />
+              <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z" />
             </svg>
           </button>
-          <button id="btnCopyNote" class="icon-btn" type="button" title="نسخ النص" aria-label="نسخ النص">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="9" y="9" width="13" height="13" rx="2"/>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          <button id="btnCopyNote" class="icb" type="button" title="نسخ النص" aria-label="نسخ النص">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" />
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
             </svg>
           </button>
-          <button id="btnDeleteNote" class="icon-btn danger" type="button" title="حذف الملاحظة" aria-label="حذف">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="3 6 5 6 21 6"/>
-              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-              <path d="M10 11v6"/>
-              <path d="M14 11v6"/>
-              <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+          <button id="btnDeleteNote" class="icb dan" type="button" title="حذف الملاحظة" aria-label="حذف">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6" />
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+              <path d="M10 11v6M14 11v6" />
+              <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
             </svg>
           </button>
         </div>
@@ -197,92 +228,121 @@
     </div>
   </div>
 
-  <!-- Backup & Restore Modal -->
-  <div id="backupModal" class="modal hidden" role="dialog" aria-modal="true" aria-label="النسخ الاحتياطي والاسترجاع">
+  <!-- Settings & .txt Backup Sheet -->
+  <div id="backupModal" class="modal" hidden role="dialog" aria-modal="true" aria-label="النسخ الاحتياطي والإعدادات">
     <div class="modal-backdrop" id="backupBackdrop"></div>
-    <div class="backup-sheet">
+    <div class="mbox backup-sheet">
       <div class="sheet-header">
-        <h2>النسخ الاحتياطي (.txt)</h2>
-        <button id="btnCloseBackup" class="icon-btn" type="button" aria-label="إغلاق">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18"/>
-            <line x1="6" y1="6" x2="18" y2="18"/>
+        <h3>النسخ الاحتياطي والإعدادات</h3>
+        <button id="btnCloseBackup" class="icb" type="button" aria-label="إغلاق">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
         </button>
       </div>
 
       <div class="sheet-content">
-        <div class="setting-card">
-          <div class="setting-row">
-            <div>
-              <div class="setting-title">نسخ احتياطي تلقائي في ملف .txt</div>
-              <div class="setting-desc">
-                يحفظ نسخة تلقائياً عند حفظ أو تعديل أو حذف أي ملاحظة
-              </div>
-            </div>
-            <label class="switch">
-              <input id="chkAutoBackup" type="checkbox" checked />
-              <span class="slider"></span>
-            </label>
+        <!-- Theme Segmented Control (Iron / Morning) -->
+        <div class="qrow">
+          <div class="mu lbl-sm">المظهر</div>
+          <div class="thseg" role="group" aria-label="اختر المظهر">
+            <button id="btnThemeIron" type="button" data-th="iron">الليل (Iron)</button>
+            <button id="btnThemeMorning" type="button" data-th="morning">الصباح (Morning)</button>
           </div>
-
-          <div class="setting-row compact">
-            <span class="setting-sub">اسم الملف التلقائي:</span>
-            <select id="selectFilenameMode" class="select-sm">
-              <option value="fixed">keep-notes-backup.txt (ثابت)</option>
-              <option value="dated">keep-notes-YYYY-MM-DD.txt (بالتاريخ)</option>
-            </select>
-          </div>
-
-          <div id="backupMethodInfo" class="info-box"></div>
         </div>
 
-        <!-- Optional Direct File Link (Desktop Chrome / Supported browsers) -->
-        <div id="directLinkCard" class="setting-card hidden">
-          <div class="setting-row">
-            <div>
+        <!-- Tactile Settings Switches -->
+        <div class="card setting-group">
+          <button id="btnToggleAutoBackup" class="swr" type="button" role="switch" aria-checked="true">
+            <span class="swt2">
+              <b>نسخ احتياطي تلقائي (.txt)</b>
+              <small>يحدّث ملف النسخ الاحتياطي عند حفظ أو تعديل أو حذف أي ملاحظة</small>
+            </span>
+            <span id="swAutoBackup" class="swk on" aria-hidden="true"></span>
+          </button>
+
+          <button id="btnPickFilenameMode" class="swr" type="button">
+            <span class="swt2">
+              <b>اسم ملف النسخة التلقائي</b>
+              <small id="filenameModeLabel">keep-notes-backup.txt (ثابت)</small>
+            </span>
+            <span class="pchev" aria-hidden="true"></span>
+          </button>
+
+          <button id="btnToggleSfx" class="swr last" type="button" role="switch" aria-checked="true">
+            <span class="swt2">
+              <b>أصوات اللمس الخفيفة</b>
+              <small>نقرات تفاعلية هادئة عند التعديل والحفظ</small>
+            </span>
+            <span id="swSfx" class="swk on" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <div id="backupMethodInfo" class="note-ok"></div>
+
+        <!-- Direct File Link (Android Bridge or File System Access API) -->
+        <div id="directLinkCard" class="card link-card" hidden>
+          <div class="row">
+            <div class="sp">
               <div class="setting-title">ربط ملف .txt مباشر (كتابة صامتة)</div>
-              <div id="linkedFileLabel" class="setting-desc">لم يتم ربط ملف بعد</div>
+              <div id="linkedFileLabel" class="mu">لم يتم ربط ملف بعد</div>
             </div>
-            <div class="btn-row-inline">
-              <button id="btnLinkFile" class="btn-secondary-sm" type="button">اختيار ملف</button>
-              <button id="btnUnlinkFile" class="btn-ghost-sm hidden" type="button">فك الربط</button>
-            </div>
+            <button id="btnLinkFile" class="btn sm" type="button">اختيار ملف</button>
+            <button id="btnUnlinkFile" class="btn sm ghost" type="button" hidden>فك الربط</button>
           </div>
         </div>
 
         <div class="backup-actions-grid">
-          <button id="btnDownloadTxt" class="action-btn primary" type="button">
-            تنزيل ملف .txt الآن
-          </button>
-          <button id="btnShareTxt" class="action-btn hidden" type="button">
-            مشاركة ملف .txt
-          </button>
-          <button id="btnImportTxt" class="action-btn" type="button">
-            استيراد / استرجاع من .txt
-          </button>
-          <input id="fileImportInput" type="file" accept=".txt,text/plain" class="hidden" />
+          <button id="btnDownloadTxt" class="btn pri w" type="button">تنزيل ملف .txt الآن</button>
+          <button id="btnShareTxt" class="btn w" type="button" hidden>مشاركة ملف .txt</button>
+          <button id="btnImportTxt" class="btn w" type="button">استيراد / استرجاع من .txt</button>
+          <input id="fileImportInput" type="file" accept=".txt,text/plain" hidden />
         </div>
 
-        <div class="preview-block">
-          <div class="preview-header">
-            <span>معاينة ملف النسخ الاحتياطي (.txt)</span>
-            <button id="btnCopyTxtPreview" class="btn-ghost-sm" type="button">نسخ النص</button>
+        <details class="dtl preview-details">
+          <summary>معاينة محتوى ملف .txt</summary>
+          <div class="preview-block">
+            <div class="preview-header">
+              <span>keep-notes-backup.txt</span>
+              <button id="btnCopyTxtPreview" class="ptxt" type="button">نسخ النص</button>
+            </div>
+            <pre id="txtPreview" class="cardtxt" dir="auto"></pre>
           </div>
-          <pre id="txtPreview" class="txt-preview" dir="auto"></pre>
-        </div>
+        </details>
 
-        <div id="lastBackupLabel" class="last-backup-label"></div>
+        <div id="lastBackupLabel" class="mu center-note"></div>
       </div>
     </div>
   </div>
 
-  <!-- Toast / Snackbar -->
-  <div id="toast" class="toast hidden" role="status" aria-live="polite">
-    <span id="toastText"></span>
-    <button id="toastUndoBtn" class="toast-undo hidden" type="button">تراجع</button>
+  <!-- Custom Theme-Matched Confirm Dialog (#ask) -->
+  <div id="ask" hidden role="alertdialog" aria-modal="true">
+    <div class="abx">
+      <p id="askText" class="atx"></p>
+      <div class="abt">
+        <button id="askNo" type="button">إلغاء</button>
+        <button id="askYes" class="ok" type="button">تأكيد</button>
+      </div>
+    </div>
   </div>
 
-  <script type="module" src="./app.js"></script>
+  <!-- Custom Bottom Picker Sheet (#xp) -->
+  <div id="xp" hidden role="dialog" aria-modal="true">
+    <div class="xpb">
+      <div id="xpTitle" class="xpt"></div>
+      <div id="xpList" class="xpl"></div>
+    </div>
+  </div>
+
+  <!-- Swipeable Toast & Undo Snackbar -->
+  <div id="toast" role="status" aria-live="polite"></div>
+  <div id="undo" role="status" aria-live="polite">
+    <span id="undoText"></span>
+    <button id="undoBtn" type="button">تراجع</button>
+  </div>
+
+  <script src="backup.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

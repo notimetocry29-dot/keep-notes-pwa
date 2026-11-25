@@ -1,0 +1,2 @@
+-keepclassmembers class app.gymlog.twa.MainActivity$Bridge { @android.webkit.JavascriptInterface <methods>; }
+-keepattributes JavascriptInterface

@@ -1,0 +1,63 @@
+<!doctype html><html lang="ar" dir="rtl" data-th="{{TH}}"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<style>
+@font-face{font-family:"ArUI";src:url({{F_R4}}) format("woff2");font-weight:300 500}
+@font-face{font-family:"ArUI";src:url({{F_R6}}) format("woff2");font-weight:600 900}
+@font-face{font-family:"BasQ";src:url({{F_RQ}}) format("woff2");font-weight:700}
+@font-face{font-family:"Figtree";src:url({{F_FT}}) format("woff2");font-weight:300 900;unicode-range:U+0000-00FF,U+2000-206F}
+:root{--bg:#0e0e0f;--s1:#17171a;--s2:#202024;--bd:#2d2d33;--tx:#ece8e1;--tx2:#cfc6b8;--mu:#968f85;--ac:#c38d4f;--ac2:#e2b37c;--bad:#d06c57;--dim:#2a2a2f}
+html[data-th=morning]{--bg:#f3eee5;--s1:#faf7f1;--s2:#ece5d8;--bd:#d4c9b6;--tx:#1d1a16;--tx2:#3a342b;--mu:#675e52;--ac:#8f5518;--ac2:#7a4515;--bad:#b0432e;--dim:#e2d9ca}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--tx);font-family:"Figtree","ArUI",system-ui,sans-serif;overflow:hidden}
+main{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 26px;text-align:center;animation:in .5s ease both}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.orb{position:relative;flex:none;width:min(60vw,220px,32vh);aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.orb svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.spin{transform-origin:100px 100px;animation:rot 48s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+.nm{position:relative;font-family:"BasQ","ArUI",serif;font-weight:700;font-size:min(11vw,42px);line-height:1.25;color:var(--tx2)}
+.sub{position:relative;margin-top:10px;font-size:12.5px;color:var(--mu)}
+.about{margin:24px 0 0;max-width:330px;font-size:15.5px;line-height:1.95;color:var(--tx2)}
+.note{margin-top:20px;width:100%;max-width:340px;background:var(--s1);border:1px solid var(--bd);border-radius:16px;padding:15px 18px;text-align:start}
+.note b{display:block;font-weight:600;font-size:15px;color:var(--tx);margin-bottom:3px}
+.note p{margin:0;font-size:14px;line-height:1.85;color:var(--mu)}
+.st{margin-top:18px;display:flex;align-items:center;justify-content:center;gap:9px;font-size:13.5px;color:var(--mu);min-height:22px;transition:color .2s}
+.dot{flex:none;width:7px;height:7px;border-radius:50%;background:var(--bad);animation:pl 1.9s ease-in-out infinite}
+.st.try .dot{background:var(--ac2);animation-duration:.8s}
+.st.no{color:var(--tx2)}
+@keyframes pl{0%,100%{opacity:.35;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
+.btn{margin-top:14px;display:inline-block;padding:12px 42px;border-radius:99px;border:1px solid color-mix(in srgb,var(--ac) 55%,transparent);color:var(--ac2);font-weight:600;font-size:15.5px;text-decoration:none;transition:background .15s,transform .1s}
+.btn:active{transform:scale(.97);background:color-mix(in srgb,var(--ac) 14%,transparent)}
+.en{margin-top:18px;max-width:300px;font-size:12.5px;line-height:1.6;color:var(--mu);opacity:.75;direction:ltr}
+.shk{animation:shk .4s ease}
+@keyframes shk{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+@media (max-height:640px){.about{margin-top:16px;font-size:14.5px;line-height:1.8}.note{margin-top:14px;padding:12px 16px}.en{display:none}}
+@media (prefers-reduced-motion:reduce){.spin,.dot,main{animation:none}}
+</style></head><body><main>
+<div class="orb" aria-hidden="true">
+<svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="84" fill="var(--s1)"/>
+<g class="spin" fill="none" stroke-width="6.5" stroke-linecap="round">
+<circle cx="100" cy="100" r="95" stroke="var(--bad)" stroke-dasharray="104 493" transform="rotate(-84 100 100)"/>
+<circle cx="100" cy="100" r="95" stroke="var(--ac2)" stroke-dasharray="104 493" transform="rotate(-12 100 100)"/>
+<circle cx="100" cy="100" r="95" stroke="var(--ac)" stroke-opacity=".7" stroke-dasharray="104 493" transform="rotate(60 100 100)"/>
+<circle cx="100" cy="100" r="95" stroke="var(--dim)" stroke-dasharray="104 493" transform="rotate(132 100 100)"/>
+<circle cx="100" cy="100" r="95" stroke="var(--dim)" stroke-dasharray="104 493" transform="rotate(204 100 100)"/>
+</g></svg>
+<div class="nm">مفكرة</div><div class="sub">ملاحظاتك معك دائماً</div>
+</div>
+<p class="about">ملاحظاتك السريعة بألوان هادئة، بحث فوري، ونسخ احتياطي تلقائي في ملف نصي .txt على موبايلك.</p>
+<div class="note"><b>أول فتحة بس محتاجة نت</b><p>عشان التطبيق ينزل على تليفونك. بعد كده بيشتغل من غير نت خالص.</p></div>
+<div class="st" id="st"><i class="dot"></i><span id="stx">مستني النت… أول ما يرجع هيفتح لوحده</span></div>
+<a class="btn" id="go" href="keeplite://retry">حاول تاني</a>
+<p class="en">The first launch needs an internet connection. After that, the app works fully offline.</p>
+</main>
+<script>
+(function(){var st=document.getElementById('st'),tx=document.getElementById('stx'),t=0;
+var W='مستني النت… أول ما يرجع هيفتح لوحده';
+window.glNet=function(s){clearTimeout(t);st.className='st'+(s==='try'?' try':s==='none'?' no':'');
+tx.textContent=s==='try'?'بيفتح…':s==='none'?'لسه مفيش نت':W;
+if(s==='none'){var b=document.getElementById('go');b.classList.remove('shk');void b.offsetWidth;b.classList.add('shk');t=setTimeout(function(){glNet('wait')},2200)}
+if(s==='try')t=setTimeout(function(){glNet('wait')},12000)};
+document.getElementById('go').addEventListener('click',function(){glNet('try')});
+document.addEventListener('contextmenu',function(e){e.preventDefault()});})();
+</script></body></html>
