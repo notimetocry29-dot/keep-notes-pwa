@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#fbbc04" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="description" content="تطبيق ملاحظات خفيف شبيه بجوجل كيب للموبايل مع نسخ احتياطي تلقائي لملف txt" />
+  <title>KeepLite - ملاحظاتي</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="./icons/icon.svg" />
+  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Top Search Header -->
+    <header class="top-bar">
+      <div class="search-pill">
+        <button id="btnOpenBackup" class="icon-btn backup-trigger" type="button" title="النسخ الاحتياطي (.txt)" aria-label="النسخ الاحتياطي">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+          <span id="autoBackupDot" class="status-dot active" title="النسخ الاحتياطي التلقائي مفعل"></span>
+        </button>
+
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="ابحث في ملاحظاتك..."
+          autocomplete="off"
+          aria-label="ابحث في ملاحظاتك"
+        />
+
+        <button id="btnClearSearch" class="icon-btn hidden" type="button" title="مسح البحث" aria-label="مسح البحث">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+
+        <button id="btnToggleView" class="icon-btn" type="button" title="تغيير العرض" aria-label="تغيير طريقة العرض">
+          <svg id="iconViewGrid" class="hidden" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+            <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+            <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+            <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+          </svg>
+          <svg id="iconViewList" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="4" y1="6" x2="20" y2="6"/>
+            <line x1="4" y1="12" x2="20" y2="12"/>
+            <line x1="4" y1="18" x2="20" y2="18"/>
+          </svg>
+        </button>
+
+        <button id="btnToggleTheme" class="icon-btn" type="button" title="الوضع الليلي" aria-label="تبديل الوضع الليلي">
+          <svg id="iconMoon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          <svg id="iconSun" class="hidden" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Quick Color Filter Strip -->
+      <div id="colorFilterBar" class="color-filter-bar" aria-label="تصفية حسب اللون"></div>
+    </header>
+
+    <!-- Install PWA Prompt Banner (shown only when installable) -->
+    <div id="installBanner" class="install-banner hidden">
+      <span>ثبّت التطبيق على شاشة موبايلك للوصول السريع بدون إنترنت</span>
+      <div class="install-actions">
+        <button id="btnInstallPwa" class="btn-primary-sm" type="button">تثبيت</button>
+        <button id="btnDismissInstall" class="btn-ghost-sm" type="button">لاحقاً</button>
+      </div>
+    </div>
+
+    <!-- Main Notes Area -->
+    <main class="notes-container">
+      <section id="pinnedSection" class="notes-section hidden">
+        <h2 class="section-label">مثبتة</h2>
+        <div id="pinnedGrid" class="notes-grid"></div>
+      </section>
+
+      <section id="othersSection" class="notes-section hidden">
+        <h2 id="othersLabel" class="section-label hidden">أخرى</h2>
+        <div id="othersGrid" class="notes-grid"></div>
+      </section>
+
+      <div id="emptyState" class="empty-state">
+        <div class="empty-icon">
+          <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M9 18h6"/>
+            <path d="M10 22h4"/>
+            <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/>
+          </svg>
+        </div>
+        <p id="emptyTitle" class="empty-title">ملاحظاتك تظهر هنا</p>
+        <p id="emptySub" class="empty-sub">اضغط على + لتدوين أول ملاحظة — ويتم نسخها احتياطياً لملف .txt</p>
+      </div>
+    </main>
+
+    <!-- Bottom Quick Bar + FAB -->
+    <footer class="bottom-bar">
+      <button id="btnQuickNote" class="quick-take-btn" type="button">
+        دوّن ملاحظة...
+      </button>
+      <button id="btnBackupChip" class="backup-mini-chip" type="button" title="حالة النسخ الاحتياطي">
+        <span class="chip-dot"></span>
+        <span id="backupChipLabel">.txt تلقائي</span>
+      </button>
+    </footer>
+
+    <button id="fabAddNote" class="fab" type="button" aria-label="ملاحظة جديدة" title="ملاحظة جديدة">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Note Editor Modal -->
+  <div id="editorModal" class="modal hidden" role="dialog" aria-modal="true" aria-label="تحرير الملاحظة">
+    <div class="modal-backdrop" id="editorBackdrop"></div>
+    <div id="editorSheet" class="editor-sheet" data-color="default">
+      <div class="editor-header">
+        <button id="btnSaveClose" class="btn-done" type="button" aria-label="حفظ وإغلاق">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+          <span>حفظ</span>
+        </button>
+
+        <div class="editor-top-actions">
+          <button id="btnTogglePin" class="icon-btn" type="button" title="تثبيت الملاحظة" aria-label="تثبيت">
+            <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 17v5"/>
+              <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/>
+            </svg>
+          </button>
+          <button id="btnCopyNote" class="icon-btn" type="button" title="نسخ النص" aria-label="نسخ النص">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+          </button>
+          <button id="btnDeleteNote" class="icon-btn danger" type="button" title="حذف الملاحظة" aria-label="حذف">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+              <path d="M10 11v6"/>
+              <path d="M14 11v6"/>
+              <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="editor-body">
+        <input
+          id="noteTitleInput"
+          class="note-title-input"
+          type="text"
+          dir="auto"
+          placeholder="العنوان"
+          maxlength="180"
+        />
+        <textarea
+          id="noteContentInput"
+          class="note-content-input"
+          dir="auto"
+          placeholder="دوّن ملاحظتك هنا..."
+        ></textarea>
+      </div>
+
+      <div class="editor-footer">
+        <div id="editorColorPicker" class="color-picker-row" aria-label="اختر لون الملاحظة"></div>
+        <div class="editor-meta-row">
+          <span id="editorTimestamp" class="editor-timestamp"></span>
+          <span id="editorSyncStatus" class="editor-sync-status">محفوظ محلياً</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Backup & Restore Modal -->
+  <div id="backupModal" class="modal hidden" role="dialog" aria-modal="true" aria-label="النسخ الاحتياطي والاسترجاع">
+    <div class="modal-backdrop" id="backupBackdrop"></div>
+    <div class="backup-sheet">
+      <div class="sheet-header">
+        <h2>النسخ الاحتياطي (.txt)</h2>
+        <button id="btnCloseBackup" class="icon-btn" type="button" aria-label="إغلاق">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="sheet-content">
+        <div class="setting-card">
+          <div class="setting-row">
+            <div>
+              <div class="setting-title">نسخ احتياطي تلقائي في ملف .txt</div>
+              <div class="setting-desc">
+                يحفظ نسخة تلقائياً عند حفظ أو تعديل أو حذف أي ملاحظة
+              </div>
+            </div>
+            <label class="switch">
+              <input id="chkAutoBackup" type="checkbox" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="setting-row compact">
+            <span class="setting-sub">اسم الملف التلقائي:</span>
+            <select id="selectFilenameMode" class="select-sm">
+              <option value="fixed">keep-notes-backup.txt (ثابت)</option>
+              <option value="dated">keep-notes-YYYY-MM-DD.txt (بالتاريخ)</option>
+            </select>
+          </div>
+
+          <div id="backupMethodInfo" class="info-box"></div>
+        </div>
+
+        <!-- Optional Direct File Link (Desktop Chrome / Supported browsers) -->
+        <div id="directLinkCard" class="setting-card hidden">
+          <div class="setting-row">
+            <div>
+              <div class="setting-title">ربط ملف .txt مباشر (كتابة صامتة)</div>
+              <div id="linkedFileLabel" class="setting-desc">لم يتم ربط ملف بعد</div>
+            </div>
+            <div class="btn-row-inline">
+              <button id="btnLinkFile" class="btn-secondary-sm" type="button">اختيار ملف</button>
+              <button id="btnUnlinkFile" class="btn-ghost-sm hidden" type="button">فك الربط</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="backup-actions-grid">
+          <button id="btnDownloadTxt" class="action-btn primary" type="button">
+            تنزيل ملف .txt الآن
+          </button>
+          <button id="btnShareTxt" class="action-btn hidden" type="button">
+            مشاركة ملف .txt
+          </button>
+          <button id="btnImportTxt" class="action-btn" type="button">
+            استيراد / استرجاع من .txt
+          </button>
+          <input id="fileImportInput" type="file" accept=".txt,text/plain" class="hidden" />
+        </div>
+
+        <div class="preview-block">
+          <div class="preview-header">
+            <span>معاينة ملف النسخ الاحتياطي (.txt)</span>
+            <button id="btnCopyTxtPreview" class="btn-ghost-sm" type="button">نسخ النص</button>
+          </div>
+          <pre id="txtPreview" class="txt-preview" dir="auto"></pre>
+        </div>
+
+        <div id="lastBackupLabel" class="last-backup-label"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast / Snackbar -->
+  <div id="toast" class="toast hidden" role="status" aria-live="polite">
+    <span id="toastText"></span>
+    <button id="toastUndoBtn" class="toast-undo hidden" type="button">تراجع</button>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
